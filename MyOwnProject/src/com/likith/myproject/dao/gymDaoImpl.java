@@ -19,13 +19,33 @@ public class gymDaoImpl implements gymDAO {
 	public SessionFactory sessionfactory;
 	
 	@Override
-	@Transactional
 	public List<gym> getGyms() {
 		// TODO Auto-generated method stub4
 		Session session = sessionfactory.getCurrentSession();
-	    Query<gym>theQuery = session.createQuery("from gym",gym.class);   
+	    Query<gym>theQuery = session.createQuery("from gym order by address",gym.class);   
 	    List<gym>gyms = theQuery.getResultList();
 	    return gyms;
+	}
+
+	@Override
+	public void saveGym(gym theGym) {
+		// TODO Auto-generated method stub
+		Session session = sessionfactory.getCurrentSession();
+		session.saveOrUpdate(theGym);	
+	}
+	
+	public gym getGym(int theid) {
+		Session session = sessionfactory.getCurrentSession();
+		gym theGym = session.get(gym.class,theid);
+		return theGym;
+	}
+
+	@Override
+	public void deleteItem(int theId) {
+		// TODO Auto-generated method stub
+		Session session = sessionfactory.getCurrentSession();
+	    gym theGym = session.get(gym.class,theId);  
+		session.delete(theGym);
 	}
 
 }
